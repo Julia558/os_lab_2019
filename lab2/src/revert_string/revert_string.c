@@ -6,9 +6,7 @@ void RevertString(char *str)
     int length = strlen(str), i;
     char *s = (char *)malloc(sizeof(char)*length);
     for (i = 0; i < length; i++)
-    {
         s[i]=str[length-i-1];
-    }
     for (i = 0; i < length; i++)
         str[i]=s[i];
 }
