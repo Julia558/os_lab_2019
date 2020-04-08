@@ -1,0 +1,3 @@
+all: parallel
+parallel: parallel_min_max.c find_min_max.c utils.c
+	gcc parallel_min_max.c find_min_max.c utils.c -o parallel_makefile.o
