@@ -5,9 +5,9 @@
 #include <sys/types.h>
 
 int main( int argc, char **argv ) {
-	int pid = fork();
+	pid_t pid = fork();
 	if ( pid == 0 )
-		execvp( "./sequential.o", argv );
+		execvp( "./sequential_makefile.o", argv );
     int status;
     wait(&status);
 	return 0;
