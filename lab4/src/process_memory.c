@@ -51,3 +51,7 @@ int showit(p) char *p;
     exit(1);
   }
 }
+
+
+
+//gcc process_memory.c -o process_memory.o
