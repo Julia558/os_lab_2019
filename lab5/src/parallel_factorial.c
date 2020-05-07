@@ -10,7 +10,7 @@
 
 pthread_mutex_t mut = PTHREAD_MUTEX_INITIALIZER;
 int mod, result = 1;
-struct Indicators
+struct flags
 {
   int begin;
   int end;
@@ -18,18 +18,15 @@ struct Indicators
 
 void factorial(void *args)
 {
-  struct Indicators *thread_args = (struct Indicators *)args;
-  int Multi = 1;
-  int i;
+  struct flags *thread_args = (struct flags *)args;
+  int i, current = 1;
   for (i = (*thread_args).begin; i <= (*thread_args).end; i++)
-    Multi *= i;
-  //Блокируем доступ к общ переменной
-  pthread_mutex_lock(&mut);
+    current *= i;
+  pthread_mutex_lock(&mut);     //Блокируем доступ к общей переменной
   int previous = result;
-  result = (previous * Multi) % mod;
+  result = (previous * current) % mod;
   printf("Indicators %d - %d\nPrevious_result: %d, Current_result: %d\n", (*thread_args).begin, (*thread_args).end, previous, result);
-  //Открываем доступ
-  pthread_mutex_unlock(&mut);
+  pthread_mutex_unlock(&mut);   //Открываем доступ
 }
 
 int main(int argc, char **argv)
@@ -99,13 +96,10 @@ int main(int argc, char **argv)
     return 1;
   }
   
-  //Создаём необходимое кол-во потоков
-  pthread_t threads[pnum];
-  //Создаём соответствующие потокам показатели begin и end
-  struct Indicators args[pnum];
-  //Разбиваем число k
+  pthread_t threads[pnum];  //Создаём необходимое кол-во потоков
+  struct flags args[pnum]; //Создаём соответствующие потокам показатели begin и end
   int i;
-  for (i = 0; i < pnum; i++)
+  for (i = 0; i < pnum; i++)  //Разбиваем число k
   {
       args[i].begin = (k/pnum)*i + 1;
       args[i].end = (k/pnum)*(i+1);
@@ -115,8 +109,7 @@ int main(int argc, char **argv)
         return 1;
       }
   }
-  //Завершаем потоки
-  for (i = 0; i < pnum; i++)
+  for (i = 0; i < pnum; i++)  //Завершаем потоки
   {
     pthread_join(threads[i], NULL);
   }
