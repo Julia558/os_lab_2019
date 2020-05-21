@@ -12,6 +12,7 @@
 #include <sys/types.h>
 
 #include "pthread.h"
+#include "multmodulo.h"
 
 struct FactorialArgs {
   uint64_t begin;
@@ -19,18 +20,6 @@ struct FactorialArgs {
   uint64_t mod;
 };
 
-uint64_t MultModulo(uint64_t a, uint64_t b, uint64_t mod) {
-  uint64_t result = 0;
-  a = a % mod;
-  while (b > 0) {
-    if (b % 2 == 1)
-      result = (result + a) % mod;
-    a = (a * 2) % mod;
-    b /= 2;
-  }
-
-  return result % mod;
-}
 
 int port = -1;
 
@@ -202,7 +191,7 @@ int main(int argc, char **argv) {
       }
       //Дожидаемся завершения потоков и сводим результат
       uint64_t total = 1;
-      for (uint32_t i = 0; i < tnum; i++) {
+      for (i = 0; i < tnum; i++) {
         uint64_t result = 0;
         pthread_join(threads[i], (void **)&result);
         total = MultModulo(total, result, mod);
