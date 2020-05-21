@@ -4,14 +4,10 @@ CFLAGS=-I.
 all: server client
 
 server: server.c
-	$(CC) multmodulo.c server.c -o server.o  -lpthread $(CFLAGS)
+	$(CC) server.c libmulti.so -lpthread -o server.o $(CFLAGS)
 
 client: client.c
-	$(CC) multmodulo.c client.c -o client.o  -lpthread $(CFLAGS)
-
-libs: multmodulo.c
-	$(CC) -c multmodulo.c -o multmodulo.o
-	ar rcs librepetition.a multmodulo.o
+	$(CC) client.c libmulti.so -lpthread -o client.o $(CFLAGS)
 
 clean :
-	rm client.out server.out
+	rm client.o server.o
