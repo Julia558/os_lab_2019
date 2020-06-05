@@ -94,7 +94,9 @@ int main(int argc, char *argv[]) {
       perror("write problem");
       exit(1);
     }
+
   }
+
 
   //Закрывает/прерывает все существующие соединения сокета
   close(fd);

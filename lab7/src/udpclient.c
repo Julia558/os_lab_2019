@@ -86,7 +86,8 @@ int main(int argc, char **argv) {
     exit(1);
   }
 
-  write(1, "Enter string: \n", 13);
+  write(1, "Enter string: \n", 15);
+    
 
   while ((n = read(0, sendline, BUFSIZE)) > 0) {
     //отправляет сообщения в сокет  
@@ -95,7 +96,8 @@ int main(int argc, char **argv) {
       perror("sendto problem");
       exit(1);
     }
-    sleep(1);
+    
+    //sleep(3);
 
     /*виснет, если не получили ответ от сервера
     могут использоваться для получения данных, независимо от того, 

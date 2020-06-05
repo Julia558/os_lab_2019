@@ -11,6 +11,7 @@
 //#define SERV_PORT 10050
 //#define BUFSIZE 100
 #define SADDR struct sockaddr
+#define SLEN sizeof(struct sockaddr_in)
 
 int main(int argc, char *argv[]) {
   const size_t kSize = sizeof(struct sockaddr_in);
@@ -90,17 +91,18 @@ int main(int argc, char *argv[]) {
     exit(1);
   }
 
-  //Слушаем в цикле
+  //Слушаем
+  int flag = 1;
   while (1) {
     unsigned int clilen = kSize;
 
-    //Является блокирующим – ожидает поступления запроса на соединение
+    //ожидает поступления запроса на соединение
     if ((cfd = accept(lfd, (SADDR *)&cliaddr, &clilen)) < 0) {
       perror("accept problem");
       exit(1);
     }
     printf("connection established\n");
-
+    sleep(3);
     while ((nread = read(cfd, buf, BUFSIZE)) > 0) {
       write(1, &buf, nread);
     }
@@ -109,7 +111,8 @@ int main(int argc, char *argv[]) {
       perror("read problem");
       exit(1);
     }
-    //Закрывает (или прерывает) все существующие соединения сокета
+
+    //Закрывает все существующие соединения сокета
     close(cfd);
   }
 }

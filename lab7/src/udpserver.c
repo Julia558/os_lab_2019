@@ -90,8 +90,7 @@ int main(int argc, char *argv[]) {
     }
     unsigned int len = SLEN;
 
-    //могут использоваться для получения данных, независимо от того, 
-    //является ли сокет ориентированным на соединения или нет.
+    //использоваться для получения данных
     if ((n = recvfrom(sockfd, mesg, BUFSIZE, 0, (SADDR *)&cliaddr, &len)) < 0) {
       perror("recvfrom problem (SOCK_DGRAM)");
       exit(1);
@@ -102,20 +101,20 @@ int main(int argc, char *argv[]) {
     printf("REQUEST %s      FROM %s : %d\n", mesg,
            inet_ntop(AF_INET, (void *)&cliaddr.sin_addr.s_addr, ipadr, 16),
            ntohs(cliaddr.sin_port));
-
-    //отправляет сообщения в сокет  
-    //соединение не обязательно
+           
+           sleep(3);
+    
     if (sendto(sockfd, mesg, n, 0, (SADDR *)&cliaddr, len) < 0) {
       perror("sendto problem");
       exit(1);
     }
 
-    if(flag) {
-        // падение сервера = сокет не может принимать данные
+    /*if(flag) {
+        
         shutdown(sockfd, SHUT_RDWR);
         close(sockfd);
 
-        sleep(1);
+        sleep(3);
 
         if ((sockfd2 = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
             perror("socket problem");
@@ -126,7 +125,7 @@ int main(int argc, char *argv[]) {
             exit(1);
         }
         flag = -1;
-    }
+    }*/
 
   }
 }
